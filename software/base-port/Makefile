@@ -38,6 +38,10 @@ COLOR_NONE  		= \033[0m
 
 # Compile C to object file
 ## Lab1 TODO: add C compile rule
+ocompile = riscv64-unknown-linux-gnu-gcc
+$(TAR_DIR)/%.o: %.c
+	@mkdir -p $(dir $@) && echo "$(COLOR_YELLOW)[CC]$(COLOR_NONE) $<"
+	@$(CC) -c $(CFLAGS) -o $@ $(realpath $<)
 
 # Compile assembly to object file
 $(TAR_DIR)/%.o: %.S
@@ -54,7 +58,7 @@ $(IMAGE).elf: $(OBJS) $(LIBS)
 	@echo "$(COLOR_YELLOW)[LD]$(COLOR_NONE) build/$(notdir $@)" 
 	@$(LD) $(LDFLAGS) -o $@ --start-group $(LINKAGE) --end-group
 ## Lab1 TODO: add disassemble command here
-	
+	@$(OBJ_DUMP) -d $@ > $(IMAGE).txt
 	@$(OBJ_COPY) -O binary $@ $(IMAGE).bin
 
 image: $(IMAGE).elf
@@ -69,3 +73,6 @@ clean:
 	rm -rf $(BUILD_DIR)
 clean-all:
 	rm -rf $(BUILD_DIR) $(BASE_PORT)/*/build
+
+
+
