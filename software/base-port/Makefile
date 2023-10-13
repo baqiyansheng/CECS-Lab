@@ -1,3 +1,4 @@
+# SIM_PATH ?= $(abspath "../../simulator")
 -include $(BASE_PORT)/script/riscv32.mk
 ifeq ($(MAKECMDGOALS),)
   MAKECMDGOALS  = image
@@ -73,6 +74,3 @@ clean:
 	rm -rf $(BUILD_DIR)
 clean-all:
 	rm -rf $(BUILD_DIR) $(BASE_PORT)/*/build
-
-
-

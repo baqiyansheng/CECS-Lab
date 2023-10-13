@@ -43,13 +43,15 @@ uint64_t g_nr_guest_inst = 0;
 void single_cycle()
 {
     // Lab2 TODO: implement the single cycle function of your cpu
-    // m_trace->dump(sim_time++);
+    m_trace->dump(sim_time++);
     if (dut->commit_wb == 1)
         set_state();
     dut->clk = 1;
     dut->eval();
+    m_trace->dump(sim_time++);
     dut->clk = 0;
     dut->eval();
+    m_trace->dump(sim_time++);
 }
 
 // simulate a reset
@@ -83,6 +85,12 @@ SimState sim_state = {.state = SIM_STOP};
 
 void add_to_queue()
 {
+    if (dut->inst == 0x00000013)
+        return;
+    if (dut->inst == 0x00000000)
+        return;
+    if (dut->inst == inst_log_queue[(rear - 1) % 17].inst)
+        return;
     if ((rear + 1) % 17 == front) // 目前队满
     {
         front = (front + 1) % 17; // 移动队头
@@ -93,12 +101,12 @@ void add_to_queue()
 }
 void print_queue()
 {
-    printf("%d,%d\n", front, rear);
+    // printf("%d,%d\n", front, rear);
     int i = front;
     int k = 1;
     while (i != rear)
     {
-        printf("记录%d:PC:0x%lx\tinst:0x%08lx\t\t", k, inst_log_queue[i].pc, inst_log_queue[i].inst);
+        printf("记录%d:PC:0x%x\tinst:0x%08x\t\t", k, inst_log_queue[i].pc, inst_log_queue[i].inst);
         word_t Word = inst_log_queue[i].inst;
         uint8_t bytes[5] = {0};
         bytes[0] = (Word & 0xFF);
@@ -151,15 +159,14 @@ void cpu_exec(unsigned int n)
                 difftest_sync();
             }
             // Lab3 TODO: use difftest_step function here to execute difftest
-
+            difftest_step();
             g_nr_guest_inst++;
             npc_cpu_uncache_pre = dut->uncache_read_wb;
         }
         // your cpu step a cycle
         add_to_queue();
-        if (f) //si指令输出队列
-            print_queue();
         single_cycle();
+        // print_queue();
 
 #ifdef DEVICE
         device_update();
@@ -167,7 +174,8 @@ void cpu_exec(unsigned int n)
         if (sim_state.state != SIM_RUNNING)
             break;
     }
-
+    if (f) // si指令输出队列
+        print_queue();
     switch (sim_state.state)
     {
     case SIM_RUNNING:
@@ -229,7 +237,7 @@ void isa_reg_display()
 {
     for (int i = 0; i < 32; i += 2)
     {
-        printf("gpr[%d](%s) = 0x%10x", i, regs[i], cpu_gpr[i]);
+        printf("gpr[%d](%s) = 0x%x\t\t", i, regs[i], cpu_gpr[i]);
         printf("gpr[%d](%s) = 0x%x\n", i + 1, regs[i + 1], cpu_gpr[i + 1]);
     }
 }
