@@ -35,7 +35,7 @@ VM_PREFIX = VCPU
 VM_MODPREFIX = VCPU
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-	-I/home/jy/COS/CECS-Lab/simulator/sim/include \
+	-I/home/jy/CECS-Lab/simulator/sim/include \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
@@ -62,13 +62,13 @@ VM_USER_CLASSES = \
 
 # User .cpp directories (from .cpp's on Verilator command line)
 VM_USER_DIR = \
-	/home/jy/COS/CECS-Lab/simulator/sim \
-	/home/jy/COS/CECS-Lab/simulator/sim/device \
-	/home/jy/COS/CECS-Lab/simulator/sim/device/io \
-	/home/jy/COS/CECS-Lab/simulator/sim/difftest \
-	/home/jy/COS/CECS-Lab/simulator/sim/memory \
-	/home/jy/COS/CECS-Lab/simulator/sim/sdb \
-	/home/jy/COS/CECS-Lab/simulator/sim/utils \
+	/home/jy/CECS-Lab/simulator/sim \
+	/home/jy/CECS-Lab/simulator/sim/device \
+	/home/jy/CECS-Lab/simulator/sim/device/io \
+	/home/jy/CECS-Lab/simulator/sim/difftest \
+	/home/jy/CECS-Lab/simulator/sim/memory \
+	/home/jy/CECS-Lab/simulator/sim/sdb \
+	/home/jy/CECS-Lab/simulator/sim/utils \
 
 
 ### Default rules...
@@ -80,39 +80,39 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 ### Executable rules... (from --exe)
 VPATH += $(VM_USER_DIR)
 
-build.o: /home/jy/COS/CECS-Lab/simulator/sim/build.cpp
+build.o: /home/jy/CECS-Lab/simulator/sim/build.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-device.o: /home/jy/COS/CECS-Lab/simulator/sim/device/device.c
+device.o: /home/jy/CECS-Lab/simulator/sim/device/device.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-disk.o: /home/jy/COS/CECS-Lab/simulator/sim/device/disk.c
+disk.o: /home/jy/CECS-Lab/simulator/sim/device/disk.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-map.o: /home/jy/COS/CECS-Lab/simulator/sim/device/io/map.c
+map.o: /home/jy/CECS-Lab/simulator/sim/device/io/map.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-mmio.o: /home/jy/COS/CECS-Lab/simulator/sim/device/io/mmio.c
+mmio.o: /home/jy/CECS-Lab/simulator/sim/device/io/mmio.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-keyboard.o: /home/jy/COS/CECS-Lab/simulator/sim/device/keyboard.c
+keyboard.o: /home/jy/CECS-Lab/simulator/sim/device/keyboard.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-serial.o: /home/jy/COS/CECS-Lab/simulator/sim/device/serial.c
+serial.o: /home/jy/CECS-Lab/simulator/sim/device/serial.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-timer.o: /home/jy/COS/CECS-Lab/simulator/sim/device/timer.c
+timer.o: /home/jy/CECS-Lab/simulator/sim/device/timer.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-vga.o: /home/jy/COS/CECS-Lab/simulator/sim/device/vga.c
+vga.o: /home/jy/CECS-Lab/simulator/sim/device/vga.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-difftest.o: /home/jy/COS/CECS-Lab/simulator/sim/difftest/difftest.cpp
+difftest.o: /home/jy/CECS-Lab/simulator/sim/difftest/difftest.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-main.o: /home/jy/COS/CECS-Lab/simulator/sim/main.cpp
+main.o: /home/jy/CECS-Lab/simulator/sim/main.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-paddr.o: /home/jy/COS/CECS-Lab/simulator/sim/memory/paddr.cpp
+paddr.o: /home/jy/CECS-Lab/simulator/sim/memory/paddr.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-expr.o: /home/jy/COS/CECS-Lab/simulator/sim/sdb/expr.cpp
+expr.o: /home/jy/CECS-Lab/simulator/sim/sdb/expr.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-sdb.o: /home/jy/COS/CECS-Lab/simulator/sim/sdb/sdb.cpp
+sdb.o: /home/jy/CECS-Lab/simulator/sim/sdb/sdb.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-sim.o: /home/jy/COS/CECS-Lab/simulator/sim/sim.cpp
+sim.o: /home/jy/CECS-Lab/simulator/sim/sim.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-disasm.o: /home/jy/COS/CECS-Lab/simulator/sim/utils/disasm.cpp
+disasm.o: /home/jy/CECS-Lab/simulator/sim/utils/disasm.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-get_time.o: /home/jy/COS/CECS-Lab/simulator/sim/utils/get_time.c
+get_time.o: /home/jy/CECS-Lab/simulator/sim/utils/get_time.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 
 ### Link rules... (from --exe)

@@ -1,4 +1,4 @@
-sim.o: /home/jy/COS/CECS-Lab/simulator/sim/sim.cpp \
+sim.o: /home/jy/CECS-Lab/simulator/sim/sim.cpp \
  /usr/local/share/verilator/include/verilated_dpi.h \
  /usr/local/share/verilator/include/verilatedos.h \
  /usr/local/share/verilator/include/verilated.h \
@@ -11,9 +11,9 @@ sim.o: /home/jy/COS/CECS-Lab/simulator/sim/sim.cpp \
  /usr/local/share/verilator/include/verilated_vcd_c.h \
  /usr/local/share/verilator/include/verilated_trace.h \
  /usr/local/share/verilator/include/verilated_trace_defs.h \
- /home/jy/COS/CECS-Lab/simulator/sim/include/debug.h \
- /home/jy/COS/CECS-Lab/simulator/sim/include/common.h \
- /home/jy/COS/CECS-Lab/simulator/sim/include/generated/autoconf.h \
- /home/jy/COS/CECS-Lab/simulator/sim/include/macro.h \
- /home/jy/COS/CECS-Lab/simulator/sim/include/disasm.h \
- /home/jy/COS/CECS-Lab/simulator/sim/memory/paddr.h
+ /home/jy/CECS-Lab/simulator/sim/include/debug.h \
+ /home/jy/CECS-Lab/simulator/sim/include/common.h \
+ /home/jy/CECS-Lab/simulator/sim/include/generated/autoconf.h \
+ /home/jy/CECS-Lab/simulator/sim/include/macro.h \
+ /home/jy/CECS-Lab/simulator/sim/include/disasm.h \
+ /home/jy/CECS-Lab/simulator/sim/memory/paddr.h

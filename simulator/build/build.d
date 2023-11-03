@@ -1,2 +1,2 @@
-build.o: /home/jy/COS/CECS-Lab/simulator/sim/build.cpp \
- /home/jy/COS/CECS-Lab/simulator/sim/include/debug.h
+build.o: /home/jy/CECS-Lab/simulator/sim/build.cpp \
+ /home/jy/CECS-Lab/simulator/sim/include/debug.h

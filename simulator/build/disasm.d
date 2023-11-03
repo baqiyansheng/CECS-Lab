@@ -1,4 +1,4 @@
-disasm.o: /home/jy/COS/CECS-Lab/simulator/sim/utils/disasm.cpp \
+disasm.o: /home/jy/CECS-Lab/simulator/sim/utils/disasm.cpp \
  /usr/lib/llvm-11/include/llvm/MC/MCAsmInfo.h \
  /usr/lib/llvm-11/include/llvm/ADT/StringRef.h \
  /usr/lib/llvm-11/include/llvm/ADT/STLExtras.h \

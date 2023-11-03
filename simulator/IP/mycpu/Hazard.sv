@@ -26,6 +26,13 @@ module Hazard(
     input  logic [31:0] jump_target,
 
     // Lab4 TODO: you may need to add some signals to cope with CSR, ecall and mret
+    //修改
+    input  logic [31:0] inst_ex,
+    input  logic [31:0] pc_ex,
+    input  logic [ 0:0] csr_we_wb,
+    input  logic [11:0] csr_waddr_wb,
+    input  logic [11:0] csr_raddr_ex,
+    input  logic [31:0] csr_wdata_wb,
 
     output logic [ 0:0] pc_set,
     output logic [ 0:0] IF1_IF2_flush,
@@ -40,7 +47,6 @@ module Hazard(
     output logic [ 0:0] ID_EX_stall,
     output logic [ 0:0] EX_LS_stall,
     output logic [ 0:0] LS_WB_stall,
-
     output logic [31:0] pc_set_target
 );
     // forwarding
@@ -65,6 +71,10 @@ module Hazard(
             forward2_en = 1'b1;
             forward2_data = rf_wdata_wb;
         end
+        // else if (csr_we_wb && csr_raddr_ex == csr_waddr_wb)begin
+        //     forward2_en = 1'b1;
+        //     forward2_data = csr_wdata_wb;
+        // end
     end
 
     // load-use
@@ -79,13 +89,15 @@ module Hazard(
     // control hazard
     wire flush_by_jump = jump;
     // Lab4 TODO: generate CSR related flush signal
+    //修改
+    wire flush_by_csr = inst_ex[6:0] == 7'h73; 
     // Lab4 TODO: generate ecall and mret flush signal
 
     // Lab3 TODO: generate pc_set, IF1_IF2_flush, IF2_ID_flush, ID_EX_flush, EX_LS_flush, LS_WB_flush
-    assign pc_set           = flush_by_jump ;
-    assign IF1_IF2_flush    = flush_by_jump ;
-    assign IF2_ID_flush     = flush_by_jump ;
-    assign ID_EX_flush      = flush_by_jump |flush_by_load_use ;
+    assign pc_set           = flush_by_jump |flush_by_csr;
+    assign IF1_IF2_flush    = flush_by_jump |flush_by_csr;
+    assign IF2_ID_flush     = flush_by_jump |flush_by_csr;
+    assign ID_EX_flush      = flush_by_jump |flush_by_load_use |flush_by_csr;
     assign EX_LS_flush      = 0;
     assign LS_WB_flush      = 0;
 
@@ -103,6 +115,9 @@ module Hazard(
             pc_set_target = jump_target;
         end
         // Lab4 TODO: generate CSR, ecall and mret related pc_set_target
+        if(flush_by_csr) begin
+            pc_set_target = pc_ex+4;
+        end
     end
 
 endmodule

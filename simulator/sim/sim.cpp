@@ -44,14 +44,15 @@ void single_cycle()
 {
     // Lab2 TODO: implement the single cycle function of your cpu
     m_trace->dump(sim_time++);
-    if (dut->commit_wb == 1)
-        set_state();
     dut->clk = 1;
     dut->eval();
     m_trace->dump(sim_time++);
+    if (dut->commit_wb == 1)
+        set_state();
     dut->clk = 0;
     dut->eval();
     m_trace->dump(sim_time++);
+    
 }
 
 // simulate a reset
@@ -160,9 +161,10 @@ void cpu_exec(unsigned int n)
             }
             // Lab3 TODO: use difftest_step function here to execute difftest
             difftest_step();
-            g_nr_guest_inst++;
+            
             npc_cpu_uncache_pre = dut->uncache_read_wb;
         }
+        g_nr_guest_inst++;
         // your cpu step a cycle
         add_to_queue();
         single_cycle();

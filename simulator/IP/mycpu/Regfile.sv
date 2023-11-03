@@ -17,7 +17,8 @@ module Regfile(
         end
     end
     always_ff @(posedge clk) begin
-        if (we) begin
+        //修改
+        if (we&&waddr!=0) begin
             rf[waddr] <= wdata;
         end
     end
