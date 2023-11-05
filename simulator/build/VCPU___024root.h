@@ -45,6 +45,7 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         CData/*0:0*/ CPU__DOT__jump;
         CData/*0:0*/ CPU__DOT__pc_set;
         CData/*0:0*/ CPU__DOT__ID_EX_flush;
+        CData/*0:0*/ CPU__DOT__EX_LS_flush;
         CData/*0:0*/ CPU__DOT__commit_if2;
         CData/*0:0*/ CPU__DOT__commit_id;
         CData/*0:0*/ CPU__DOT__commit_ex;
@@ -53,10 +54,21 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         CData/*0:0*/ CPU__DOT__csr_we_ex;
         CData/*0:0*/ CPU__DOT__csr_we_ls;
         CData/*0:0*/ CPU__DOT__csr_we_wb;
+        CData/*0:0*/ CPU__DOT__ecall_id;
+        CData/*0:0*/ CPU__DOT__ecall_ex;
+        CData/*0:0*/ CPU__DOT__ecall_ls;
+        CData/*0:0*/ CPU__DOT__ecall_wb;
+        CData/*0:0*/ CPU__DOT__exp_valid;
+        CData/*3:0*/ CPU__DOT__exp_code;
+        CData/*0:0*/ CPU__DOT__mret_id;
+        CData/*0:0*/ CPU__DOT__mret_ex;
+        CData/*0:0*/ CPU__DOT__mret_ls;
+        CData/*0:0*/ CPU__DOT__mret_wb;
         CData/*0:0*/ CPU__DOT__ALU_inst__DOT____VdfgTmp_h175d6d08__0;
         CData/*0:0*/ CPU__DOT__Branch_inst__DOT__is_jalr;
         CData/*0:0*/ CPU__DOT__Branch_inst__DOT____VdfgTmp_h8a7e5af4__0;
         CData/*0:0*/ CPU__DOT__Hazard_inst__DOT__stall_by_load_use;
+        CData/*0:0*/ CPU__DOT__Hazard_inst__DOT____VdfgTmp_h99f7a747__0;
         CData/*0:0*/ __Vtrigprevexpr___TOP__clk__0;
         CData/*0:0*/ __VactContinue;
         VL_OUT(pc_cur,31,0);
@@ -68,6 +80,8 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         IData/*31:0*/ CPU__DOT__pc_wb;
         IData/*31:0*/ CPU__DOT__inst_if2;
         IData/*31:0*/ CPU__DOT__inst_id;
+    };
+    struct {
         IData/*31:0*/ CPU__DOT__inst_ex;
         IData/*31:0*/ CPU__DOT__inst_ls;
         IData/*31:0*/ CPU__DOT__inst_wb;
@@ -80,8 +94,6 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         IData/*31:0*/ CPU__DOT__rf_rdata2_ex;
         IData/*31:0*/ CPU__DOT__forward1_data;
         IData/*31:0*/ CPU__DOT__forward2_data;
-    };
-    struct {
         IData/*31:0*/ CPU__DOT__alu_rf_data1;
         IData/*31:0*/ CPU__DOT__alu_rf_data2;
         IData/*31:0*/ CPU__DOT__alu_rs1;

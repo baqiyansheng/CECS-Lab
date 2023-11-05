@@ -51,7 +51,14 @@ module CPU#(
     logic [ 0:0]    csr_we_id,csr_we_ex,csr_we_ls,csr_we_wb;
     logic [31:0]    csr_rdata_id,csr_rdata_ex;
     logic [31:0]    csr_wdata_ex,csr_wdata_ls,csr_wdata_wb;
-    // logic [11:0]    csr_waddr_id,csr_waddr_ex,csr_waddr_ls,csr_waddr_wb;
+    logic [31:0]    mtvec_global,mepc_global;
+    //ecall相关信号，修改
+    logic [ 0:0]    ecall_id,ecall_ex,ecall_ls,ecall_wb;
+    logic [ 0:0]    exp_valid;
+    logic [ 3:0]    exp_code;
+    //mret相关信号，修改
+    logic [ 0:0]    mret_id,mret_ex,mret_ls,mret_wb;
+
     assign inst = inst_wb;
     assign pc_cur = pc_wb;
     assign commit_if1 = rstn;
@@ -124,7 +131,9 @@ module CPU#(
         .alu_rs2_sel    (alu_rs2_sel_id),
         .wb_rf_sel      (wb_rf_sel_id),
         .br_type        (br_type_id),
-        .csr_we         (csr_we_id) //修改
+        .csr_we         (csr_we_id), //修改
+        .ecall          (ecall_id),
+        .mret           (mret_id)
     );
     Regfile  Regfile_inst (
         .clk            (clk),
@@ -144,7 +153,12 @@ module CPU#(
         .waddr          (inst_wb[31:20]),
         .we             (csr_we_wb),
         .wdata          (csr_wdata_wb),
-        .rdata          (csr_rdata_id)
+        .rdata          (csr_rdata_id),
+        .exp_valid      (exp_valid),
+        .exp_code       (exp_code),
+        .pc_wb          (pc_wb),
+        .mtvec_global   (mtvec_global),
+        .mepc_global    (mepc_global)
     );
     // assign csr_waddr_id = inst_id[31:20];
     /* ID-EX segreg */
@@ -184,10 +198,12 @@ module CPU#(
         //修改
         .csr_we_id      (csr_we_id),
         .csr_rdata_id   (csr_rdata_id),
-        // .csr_waddr_id   (csr_waddr_id),
         .csr_we_ex      (csr_we_ex),
-        .csr_rdata_ex   (csr_rdata_ex)
-        // .csr_waddr_ex   (csr_waddr_ex)
+        .csr_rdata_ex   (csr_rdata_ex),
+        .ecall_id       (ecall_id),
+        .ecall_ex       (ecall_ex),
+        .mret_id        (mret_id),
+       .mret_ex        (mret_ex)
     );
 
     /* EX stage */
@@ -279,7 +295,11 @@ module CPU#(
         .csr_we_ex      (csr_we_ex),
         .csr_wdata_ex   (csr_wdata_ex),
         .csr_we_ls      (csr_we_ls),
-        .csr_wdata_ls   (csr_wdata_ls)
+        .csr_wdata_ls   (csr_wdata_ls),
+        .ecall_ex       (ecall_ex),
+        .ecall_ls       (ecall_ls),
+        .mret_ex        (mret_ex),
+       .mret_ls        (mret_ls)
     );
 
     DCache # (
@@ -331,7 +351,11 @@ module CPU#(
         .csr_we_ls          (csr_we_ls),
         .csr_wdata_ls       (csr_wdata_ls),
         .csr_we_wb          (csr_we_wb),
-        .csr_wdata_wb       (csr_wdata_wb)
+        .csr_wdata_wb       (csr_wdata_wb),
+        .ecall_ls          (ecall_ls),
+        .ecall_wb          (ecall_wb),
+        .mret_ls          (mret_ls),
+      .mret_wb          (mret_wb)
     );
 
     /* WB stage */
@@ -344,6 +368,11 @@ module CPU#(
         .dout           (rf_wdata_wb)
     );
 
+    Exp_Commit Exp_Commit_inst (
+        .ecall_wb       (ecall_wb),
+        .exp_code       (exp_code),
+        .exp_valid      (exp_valid)
+    );
 
     /* Hazard */
     Hazard  Hazard_inst (
@@ -386,7 +415,10 @@ module CPU#(
         .csr_we_wb          (csr_we_wb),
         .csr_waddr_wb       (inst_wb[31:20]),
         .csr_raddr_ex       (inst_ex[31:20]),
-        .csr_wdata_wb       (csr_wdata_wb)
+        .csr_wdata_wb       (csr_wdata_wb),
+        .ecall_ex           (ecall_ex),
+        .ecall_wb           (ecall_wb),
+        .mtvec_global       (mtvec_global)
     ); 
 `ifdef DEBUG
     assign putchar = |wstrb_ex && (&alu_result_ex);

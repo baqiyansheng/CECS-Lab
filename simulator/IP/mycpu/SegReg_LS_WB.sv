@@ -17,6 +17,8 @@ module SegReg_LS_WB#(
     //修改
     input  logic [ 0:0] csr_we_ls,
     input  logic [31:0] csr_wdata_ls,  
+    input  logic [ 0:0] ecall_ls,
+    input  logic [ 0:0] mret_ls,
 
     output logic [31:0] pc_wb,
     output logic [31:0] inst_wb,
@@ -28,7 +30,9 @@ module SegReg_LS_WB#(
     output logic [ 0:0] uncache_read_wb,
     //修改
     output  logic [ 0:0] csr_we_wb,
-    output  logic [31:0] csr_wdata_wb     
+    output  logic [31:0] csr_wdata_wb,
+    output logic [ 0:0] ecall_wb,
+    output logic [ 0:0] mret_wb
 );
     always_ff @(posedge clk) begin
         if(!rstn || flush) begin
@@ -43,6 +47,8 @@ module SegReg_LS_WB#(
             //修改
             csr_we_wb       <=1'h0;
             csr_wdata_wb    <=32'h0;
+            ecall_wb        <=1'h0;
+            mret_wb        <=1'h0;
         end 
         else if(!stall) begin
             pc_wb           <= pc_ls;
@@ -56,6 +62,8 @@ module SegReg_LS_WB#(
             //修改
             csr_we_wb       <=csr_we_ls;
             csr_wdata_wb    <=csr_wdata_ls;
+            ecall_wb        <=ecall_ls;
+            mret_wb        <=mret_ls;
         end
     end
 

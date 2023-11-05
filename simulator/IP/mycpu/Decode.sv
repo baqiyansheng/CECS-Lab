@@ -1,4 +1,4 @@
-`include "./include/config.sv"
+ `include "./include/config.sv"
 module Decode(
     input  logic [31:0] inst,
     output logic [ 4:0] alu_op,
@@ -9,13 +9,17 @@ module Decode(
     output logic [ 1:0] alu_rs2_sel,
     output logic [ 0:0] wb_rf_sel,
     output logic [ 4:0] br_type,
-    output logic [ 0:0] csr_we //修改
+    output logic [ 0:0] csr_we, //修改
+    output logic [ 0:0] ecall, //修改
+    output logic [ 0:0] mret //修改
 );
     // normal decode 
     wire [4:0] rd = inst[11:7];
     wire [2:0] funct3 = inst[14:12];
     always_comb begin
         csr_we = 0;
+        ecall = 0;
+        mret = 0;
         case(inst[6:0])
         'h37: begin
             // lui, U_TYPE
@@ -125,15 +129,24 @@ module Decode(
         'h73: begin
             // CSR instruction
             // Lab4 TODO: finish CSR instruction decode
-            imm         = {{27{1'b0}},inst[19:15]};
-            mem_access  = `NO_ACCESS;
-            alu_op      = `ADD;
-            rf_we       = 1;
-            alu_rs1_sel = `SRC1_ZERO;
-            alu_rs2_sel = `SRC2_CSR;
-            wb_rf_sel   = `FROM_ALU;
-            br_type     = 0;
-            csr_we      = 1;
+            //修改
+            if(inst[14:12]!=3'h0) begin
+                imm         = {{27{1'b0}},inst[19:15]};
+                mem_access  = `NO_ACCESS;
+                alu_op      = `ADD;
+                rf_we       = 1;
+                alu_rs1_sel = `SRC1_ZERO;
+                alu_rs2_sel = `SRC2_CSR;
+                wb_rf_sel   = `FROM_ALU;
+                br_type     = 0;
+                csr_we      = 1;
+            end
+            else begin
+                if(inst[31:7] == 25'h0)
+                ecall = 1;
+                else if (inst[31:7]==25'h604000)
+                mret = 1;
+            end
         end
         default: begin
             imm         = 0;
@@ -144,6 +157,9 @@ module Decode(
             alu_rs2_sel = 0;
             wb_rf_sel   = 0;
             br_type     = 0;
+            ecall = 0;
+            csr_we = 0;
+            mret = 0;
         end
         endcase
     end

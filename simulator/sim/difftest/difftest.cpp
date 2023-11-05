@@ -94,7 +94,8 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc)
         // difftest_regcpy(&sim_cpu, DIFFTEST_TO_REF);
         if (ref_r->gpr[i] != cpu_gpr[i]) // 比较寄存器x[i]
         {
-            printf("寄存器%d状态不同,NEMU是%x,sim_cpu是%x\n", i, ref_r->gpr[i], cpu_gpr[i]);
+            printf("寄存器%d状态相同,NEMU是%x,sim_cpu是%x\n", i - 1, ref_r->gpr[i - 1], sim_cpu.gpr[i - 1]);
+            printf("寄存器%d状态不同,NEMU是%x,sim_cpu是%x\n", i, ref_r->gpr[i], sim_cpu.gpr[i]);
             // isa_reg_display();
             // int j = 0;
             // while (j < 32)

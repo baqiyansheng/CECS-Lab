@@ -22,8 +22,9 @@ module SegReg_ID_EX#(
     //修改
     input  logic [ 0:0] csr_we_id,
     input  logic [31:0] csr_rdata_id,
-    // input  logic [11:0] csr_waddr_id,
-
+    input  logic [ 0:0] ecall_id,
+    input  logic [ 0:0] mret_id,
+ 
     output logic [31:0] pc_ex,
     output logic [31:0] inst_ex,
     output logic [31:0] rdata1_ex,
@@ -39,7 +40,16 @@ module SegReg_ID_EX#(
     output logic [ 0:0] commit_ex,
     //修改
     output logic [ 0:0] csr_we_ex,
-    output logic [31:0] csr_rdata_ex
+    output logic [31:0] csr_rdata_ex,
+    output logic [ 0:0] ecall_ex,
+    output logic [ 0:0] mret_ex
+);
+    always_ff @(posedge clk) begin
+        if(!rstn || flush) begin
+            pc_ex           <= PC_RESET_VAL;
+            inst_ex         <= 32'h13;
+            rdata1_ex       <= 32'h0;
+            rdata2_ex       <= 32'h0;
 );
     always_ff @(posedge clk) begin
         if(!rstn || flush) begin
@@ -59,7 +69,8 @@ module SegReg_ID_EX#(
             //修改
             csr_we_ex       <=  1'h0;
             csr_rdata_ex    <=  32'b0;
-            // csr_waddr_ex    <=  12'b0;
+            ecall_ex        <=  1'h0;
+            mret_ex         <=  1'h0;
         end 
         else if(!stall) begin
             pc_ex           <= pc_id;
@@ -78,7 +89,8 @@ module SegReg_ID_EX#(
             commit_ex       <= commit_id;
             csr_we_ex       <= csr_we_id;
             csr_rdata_ex    <= csr_rdata_id;
-            // csr_waddr_ex    <= csr_waddr_id;
+            ecall_ex        <= ecall_id; 
+            mret_ex         <= mret_id;  
         end
     end
 

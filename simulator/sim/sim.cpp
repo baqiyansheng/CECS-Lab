@@ -34,6 +34,10 @@ void set_state()
     sim_cpu.pc = dut->pc_cur;
     memcpy(&sim_cpu.gpr[0], cpu_gpr, 4 * 32);
     // Lab4 TODO: set the state of csr to sim_cpu
+    memcpy(&sim_cpu.csr.mcause, cpu_mcause, 4);
+    memcpy(&sim_cpu.csr.mepc, cpu_mepc, 4);
+    memcpy(&sim_cpu.csr.mstatus, cpu_mstatus, 4);
+    memcpy(&sim_cpu.csr.mtvec, cpu_mtvec, 4);
 }
 
 // num of executed instruction
@@ -43,6 +47,7 @@ uint64_t g_nr_guest_inst = 0;
 void single_cycle()
 {
     // Lab2 TODO: implement the single cycle function of your cpu
+
     m_trace->dump(sim_time++);
     dut->clk = 1;
     dut->eval();
@@ -52,7 +57,6 @@ void single_cycle()
     dut->clk = 0;
     dut->eval();
     m_trace->dump(sim_time++);
-    
 }
 
 // simulate a reset
@@ -161,7 +165,7 @@ void cpu_exec(unsigned int n)
             }
             // Lab3 TODO: use difftest_step function here to execute difftest
             difftest_step();
-            
+
             npc_cpu_uncache_pre = dut->uncache_read_wb;
         }
         g_nr_guest_inst++;
@@ -176,8 +180,8 @@ void cpu_exec(unsigned int n)
         if (sim_state.state != SIM_RUNNING)
             break;
     }
-    if (f) // si指令输出队列
-        print_queue();
+    // if (f) // si指令输出队列
+    print_queue();
     switch (sim_state.state)
     {
     case SIM_RUNNING:
@@ -239,8 +243,8 @@ void isa_reg_display()
 {
     for (int i = 0; i < 32; i += 2)
     {
-        printf("gpr[%d](%s) = 0x%x\t\t", i, regs[i], cpu_gpr[i]);
-        printf("gpr[%d](%s) = 0x%x\n", i + 1, regs[i + 1], cpu_gpr[i + 1]);
+        printf("gpr[%d](%s) = 0x%x  0x%x\t\t", i, regs[i], cpu_gpr[i], sim_cpu.gpr[i]);
+        printf("gpr[%d](%s) = 0x%x  0x%x\n", i + 1, regs[i + 1], cpu_gpr[i + 1], sim_cpu.gpr[i + 1]);
     }
 }
 

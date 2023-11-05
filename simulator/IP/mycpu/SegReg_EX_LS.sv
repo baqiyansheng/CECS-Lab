@@ -17,6 +17,8 @@ module SegReg_EX_LS#(
     //修改
     input  logic [ 0:0] csr_we_ex,
     input  logic [31:0] csr_wdata_ex,
+    input  logic [ 0:0] ecall_ex,
+    input  logic [ 0:0] mret_ex,
 
     output logic [31:0] pc_ls,
     output logic [31:0] inst_ls,
@@ -28,7 +30,9 @@ module SegReg_EX_LS#(
 
     //修改
     output  logic [ 0:0] csr_we_ls,
-    output  logic [31:0] csr_wdata_ls
+    output  logic [31:0] csr_wdata_ls,
+    output  logic [ 0:0] ecall_ls,
+    output  logic [ 0:0] mret_ls
 );
     always_ff @(posedge clk) begin
         if(!rstn || flush) begin
@@ -42,6 +46,8 @@ module SegReg_EX_LS#(
             //修改
             csr_we_ls       <=  1'h0;
             csr_wdata_ls    <=  32'h0;
+            ecall_ls        <=  1'h0;
+            mret_ls         <=  1'h0;
         end 
         else if(!stall) begin
             pc_ls           <= pc_ex;
@@ -54,6 +60,8 @@ module SegReg_EX_LS#(
             //修改
             csr_we_ls       <=csr_we_ex;
             csr_wdata_ls    <=csr_wdata_ex;
+            ecall_ls        <=ecall_ex;
+            mret_ls         <=mret_ex;
         end
     end
 endmodule

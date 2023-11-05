@@ -33,6 +33,9 @@ module Hazard(
     input  logic [11:0] csr_waddr_wb,
     input  logic [11:0] csr_raddr_ex,
     input  logic [31:0] csr_wdata_wb,
+    input  logic [ 0:0] ecall_ex,
+    input  logic [ 0:0] ecall_wb,
+    input  logic [31:0] mtvec_global,
 
     output logic [ 0:0] pc_set,
     output logic [ 0:0] IF1_IF2_flush,
@@ -91,15 +94,18 @@ module Hazard(
     // Lab4 TODO: generate CSR related flush signal
     //修改
     wire flush_by_csr = inst_ex[6:0] == 7'h73; 
+    
     // Lab4 TODO: generate ecall and mret flush signal
+    wire flush_by_ecll_ex = ecall_ex;
+    wire flush_by_ecll_wb = ecall_wb;
 
     // Lab3 TODO: generate pc_set, IF1_IF2_flush, IF2_ID_flush, ID_EX_flush, EX_LS_flush, LS_WB_flush
-    assign pc_set           = flush_by_jump |flush_by_csr;
-    assign IF1_IF2_flush    = flush_by_jump |flush_by_csr;
-    assign IF2_ID_flush     = flush_by_jump |flush_by_csr;
-    assign ID_EX_flush      = flush_by_jump |flush_by_load_use |flush_by_csr;
-    assign EX_LS_flush      = 0;
-    assign LS_WB_flush      = 0;
+    assign pc_set           = flush_by_jump |flush_by_csr|flush_by_ecll_ex|flush_by_ecll_wb;
+    assign IF1_IF2_flush    = flush_by_jump |flush_by_csr|flush_by_ecll_ex|flush_by_ecll_wb;
+    assign IF2_ID_flush     = flush_by_jump |flush_by_csr|flush_by_ecll_ex|flush_by_ecll_wb;
+    assign ID_EX_flush      = flush_by_jump |flush_by_load_use |flush_by_csr|flush_by_ecll_ex|flush_by_ecll_wb;
+    assign EX_LS_flush      = flush_by_ecll_wb;
+    assign LS_WB_flush      = flush_by_ecll_wb;
 
     // Lab3 TODO: generate pc_stall, IF1_IF2_stall, IF2_ID_stall, ID_EX_stall, EX_LS_stall, LS_WB_stall
     assign pc_stall         = stall_by_load_use;
@@ -115,8 +121,11 @@ module Hazard(
             pc_set_target = jump_target;
         end
         // Lab4 TODO: generate CSR, ecall and mret related pc_set_target
-        if(flush_by_csr) begin
+        if(flush_by_csr|flush_by_ecll_ex) begin
             pc_set_target = pc_ex+4;
+        end
+        if (flush_by_ecll_wb) begin
+            pc_set_target = mtvec_global;
         end
     end
 
