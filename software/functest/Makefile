@@ -2,7 +2,7 @@ SIM_PATH ?= $(abspath ../../simulator)
 # 获取所有的程序名，假设你的程序名存储在src目录下，以.c为后缀
 NAMES ?= $(notdir $(basename $(wildcard src/*.c)))
 BASE_PORT ?= $(abspath ../base-port)
-ARGS ?= 
+ARGS ?= -b
 result = 0
 
 .PHONY: all clean clean-all run

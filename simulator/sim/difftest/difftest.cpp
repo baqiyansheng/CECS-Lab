@@ -94,7 +94,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc)
         // difftest_regcpy(&sim_cpu, DIFFTEST_TO_REF);
         if (ref_r->gpr[i] != cpu_gpr[i]) // 比较寄存器x[i]
         {
-            printf("寄存器%d状态相同,NEMU是%x,sim_cpu是%x\n", i - 1, ref_r->gpr[i - 1], sim_cpu.gpr[i - 1]);
+            // printf("寄存器%d状态相同,NEMU是%x,sim_cpu是%x\n", i - 1, ref_r->gpr[i - 1], sim_cpu.gpr[i - 1]);
             printf("寄存器%d状态不同,NEMU是%x,sim_cpu是%x\n", i, ref_r->gpr[i], sim_cpu.gpr[i]);
             // isa_reg_display();
             // int j = 0;
@@ -117,6 +117,30 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc)
     const char *csr_names[] = {"mepc", "mstatus", "mcause", "mtvec"};
     // check csr
     // Lab4 TODO: (In Lab3, you can ignore this part.)implement the csr check function, return false if any difference, and output some infomation of the difference
+    if (ref_r->csr.mepc != sim_cpu.csr.mepc)
+    {
+        printf("pc = 0x%x ", sim_cpu.pc);
+        printf("%s不一样,NEMU是0x%x,sim_cpu是0x%x\n", csr_names[0], ref_r->csr.mepc, sim_cpu.csr.mepc);
+        return false;
+    }
+    if (ref_r->csr.mstatus != sim_cpu.csr.mstatus)
+    {
+        printf("pc = 0x%x ", sim_cpu.pc);
+        printf("%s不一样,NEMU是%x,sim_cpu是%x\n", csr_names[1], ref_r->csr.mstatus, sim_cpu.csr.mstatus);
+        return false;
+    }
+    if (ref_r->csr.mcause != sim_cpu.csr.mcause)
+    {
+        printf("pc = 0x%x ", sim_cpu.pc);
+        printf("%s不一样,NEMU是%x,sim_cpu是%x\n", csr_names[2], ref_r->csr.mcause, sim_cpu.csr.mcause);
+        return false;
+    }
+    if (ref_r->csr.mtvec != sim_cpu.csr.mtvec)
+    {
+        printf("pc = 0x%x ", sim_cpu.pc);
+        printf("%s不一样,NEMU是%x,sim_cpu是%x\n", csr_names[3], ref_r->csr.mtvec, sim_cpu.csr.mtvec);
+        return false;
+    }
     return true;
 }
 

@@ -1,4 +1,5 @@
- `include "./include/config.sv"
+`timescale 1ns/1ps
+`include "./include/config.sv"
 module Decode(
     input  logic [31:0] inst,
     output logic [ 4:0] alu_op,
@@ -9,17 +10,12 @@ module Decode(
     output logic [ 1:0] alu_rs2_sel,
     output logic [ 0:0] wb_rf_sel,
     output logic [ 4:0] br_type,
-    output logic [ 0:0] csr_we, //修改
-    output logic [ 0:0] ecall, //修改
-    output logic [ 0:0] mret //修改
+    output logic [ 4:0] priv_vec
 );
     // normal decode 
     wire [4:0] rd = inst[11:7];
     wire [2:0] funct3 = inst[14:12];
     always_comb begin
-        csr_we = 0;
-        ecall = 0;
-        mret = 0;
         case(inst[6:0])
         'h37: begin
             // lui, U_TYPE
@@ -34,8 +30,6 @@ module Decode(
         end
         'h17: begin
             // auipc, U_TYPE
-            // Lab3 TODO: finish auipc instruction decode
-
             imm         = {inst[31:12], 12'b0};
             mem_access  = `NO_ACCESS;
             alu_op      = `ADD;
@@ -43,7 +37,7 @@ module Decode(
             alu_rs1_sel = `SRC1_PC;
             alu_rs2_sel = `SRC2_IMM;
             wb_rf_sel   = `FROM_ALU;
-            br_type     = {2'b0, funct3};
+            br_type     = {1'b0, inst[2], funct3};
         end
         'h6f: begin
             // jal, J_TYPE
@@ -58,8 +52,6 @@ module Decode(
         end
         'h67: begin
             // jalr, I_TYPE
-            // Lab3 TODO: finish jalr instruction decode
-
             imm         = {{20{inst[31]}}, inst[31:20]};
             mem_access  = `NO_ACCESS;
             alu_op      = `ADD;
@@ -115,8 +107,6 @@ module Decode(
         end
         'h33: begin
             // R_TYPE
-            // Lab3 TODO: finish R_TYPE instruction decode
-            
             imm         = 0;
             mem_access  = `NO_ACCESS;
             alu_op      = {inst[30], inst[25], funct3};
@@ -127,26 +117,15 @@ module Decode(
             br_type     = {1'b0, inst[2], funct3};
         end
         'h73: begin
-            // CSR instruction
-            // Lab4 TODO: finish CSR instruction decode
-            //修改
-            if(inst[14:12]!=3'h0) begin
-                imm         = {{27{1'b0}},inst[19:15]};
-                mem_access  = `NO_ACCESS;
-                alu_op      = `ADD;
-                rf_we       = 1;
-                alu_rs1_sel = `SRC1_ZERO;
-                alu_rs2_sel = `SRC2_CSR;
-                wb_rf_sel   = `FROM_ALU;
-                br_type     = 0;
-                csr_we      = 1;
-            end
-            else begin
-                if(inst[31:7] == 25'h0)
-                ecall = 1;
-                else if (inst[31:7]==25'h604000)
-                mret = 1;
-            end
+            // priv and priv, I_TYPE
+            imm         = 0;
+            mem_access  = `NO_ACCESS;
+            alu_op      = `ADD;
+            rf_we       = |rd && |funct3;
+            alu_rs1_sel = `SRC1_ZERO;
+            alu_rs2_sel = `SRC2_CSR;
+            wb_rf_sel   = `FROM_ALU;
+            br_type     = {1'b0, inst[2], funct3};
         end
         default: begin
             imm         = 0;
@@ -157,12 +136,15 @@ module Decode(
             alu_rs2_sel = 0;
             wb_rf_sel   = 0;
             br_type     = 0;
-            ecall = 0;
-            csr_we = 0;
-            mret = 0;
         end
         endcase
     end
-    // Lab4 TODO: you may need to decode for ecall and mret specially here
+
+    // privilege decode 
+    assign priv_vec[`CSR_RW] = inst[6:0] == 7'h73 && funct3 != 3'h0;
+    assign priv_vec[`ECALL]  = inst[6:0] == 7'h73 && funct3 == 3'h0 && inst[31:20] == 12'h0;
+    assign priv_vec[`MRET]   = inst[6:0] == 7'h73 && funct3 == 3'h0 && inst[31:20] == 12'h302;
+    assign priv_vec[`FENCEI] = inst[6:0] == 7'hf  && funct3 == 3'h1;
+    assign priv_vec[`FENCE]  = inst[6:0] == 7'hf  && funct3 == 3'h0;
 
 endmodule
