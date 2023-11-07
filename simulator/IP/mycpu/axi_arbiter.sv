@@ -72,9 +72,9 @@ module axi_arbiter(
     enum logic [2:0] {R_IDLE, I_AR, I_R, D_AR, D_R} r_crt, r_nxt;
     always @(posedge clk) begin
         if(!rstn) begin
-            r_crt <= R_IDLE;
+            r_crt = R_IDLE;
         end else begin
-            r_crt <= r_nxt;
+            r_crt = r_nxt;
         end
     end
     // stage 2: next state logic
@@ -82,35 +82,35 @@ module axi_arbiter(
         case(r_crt)
         R_IDLE: begin
             // TODO
-            r_nxt <= R_IDLE;
+            r_nxt = R_IDLE;
             if(d_rvalid)
-                r_nxt <= D_AR;
+                r_nxt = D_AR;
             else if(i_rvalid & !d_rvalid)
-                r_nxt <= I_AR;
+                r_nxt = I_AR;
         end
         I_AR: begin
             // TODO
-            r_nxt <= I_AR;
+            r_nxt = I_AR;
             if(arready)
-                r_nxt <= I_R;
+                r_nxt = I_R;
         end
         I_R: begin
             // TODO
-            r_nxt <= I_R;
+            r_nxt = I_R;
             if(rvalid && rlast)
-                r_nxt <= R_IDLE;
+                r_nxt = R_IDLE;
         end
         D_AR: begin
             // TODO
-            r_nxt <= D_AR;
+            r_nxt = D_AR;
             if(arready)
-                r_nxt <= D_R;
+                r_nxt = D_R;
         end
         D_R: begin
             // TODO
-            r_nxt <= D_R;
+            r_nxt = D_R;
             if(rvalid && rlast)
-                r_nxt <= R_IDLE;
+                r_nxt = R_IDLE;
         end
         default :                   r_nxt = R_IDLE;    
         endcase
@@ -133,29 +133,29 @@ module axi_arbiter(
         case(r_crt) 
         I_AR: begin
             // TODO
-            arvalid <= 1;
-            arlen <= i_rlen;
-            arsize <= i_rsize;
-            araddr <= i_raddr;
+            arvalid = 1;
+            arlen = i_rlen;
+            arsize = i_rsize;
+            araddr = i_raddr;
         end
         I_R: begin
             // TODO
-            rready <= 1;
-            i_rlast <= rlast;
-            i_rready <= rvalid;
+            rready = 1;
+            i_rlast = rlast;
+            i_rready = rvalid;
         end
         D_AR: begin
             // TODO
-            arvalid <= 1;
-            arlen <= d_rlen;
-            arsize <= d_rsize;
-            araddr <= d_raddr;
+            arvalid = 1;
+            arlen = d_rlen;
+            arsize = d_rsize;
+            araddr = d_raddr;
         end
         D_R: begin
             // TODO
-            rready <= 1;
-            d_rlast <= rlast;
-            d_rready <= rvalid;
+            rready = 1;
+            d_rlast = rlast;
+            d_rready = rvalid;
         end
         default:;
         endcase
@@ -165,36 +165,36 @@ module axi_arbiter(
     enum logic [1:0] {W_IDLE, D_AW, D_W, D_B} w_crt, w_nxt;
     always @(posedge clk) begin
         if(!rstn) begin
-            w_crt <= W_IDLE;
+            w_crt = W_IDLE;
         end else begin
-            w_crt <= w_nxt;
+            w_crt = w_nxt;
         end
     end
     always @(*) begin
         case(w_crt)
         W_IDLE: begin
             // TODO
-            w_nxt <= W_IDLE;
+            w_nxt = W_IDLE;
             if(d_wvalid)
-                w_nxt <= D_AW;
+                w_nxt = D_AW;
         end
         D_AW: begin
             // TODO
-            w_nxt <= D_W;
+            w_nxt = D_W;
             if(awready)
-                w_nxt <= D_W;
+                w_nxt = D_W;
         end
         D_W: begin
             // TODO
-            w_nxt <= D_B;
+            w_nxt = D_B;
             if(wready&d_wlast)
-                w_nxt <= D_B;
+                w_nxt = D_B;
         end
         D_B: begin
             // TODO
-            w_nxt <= W_IDLE;
+            w_nxt = W_IDLE;
             if(bvalid)
-                w_nxt <= W_IDLE;
+                w_nxt = W_IDLE;
         end
         default :                   w_nxt = W_IDLE;    
         endcase
@@ -217,18 +217,18 @@ module axi_arbiter(
         case(w_crt)
         D_AW: begin
             // TODO
-            awvalid <= 1;
+            awvalid = 1;
         end
         D_W: begin
             // TODO
-            d_wready <= wready;
-            wvalid <= 1;
-            wlast <= d_wlast;
+            d_wready = wready;
+            wvalid = 1;
+            wlast = d_wlast;
         end
         D_B: begin
             // TODO
-            d_bvalid <= bvalid;
-            bready <= d_bready;
+            d_bvalid = bvalid;
+            bready = d_bready;
         end
         default:;
         endcase
