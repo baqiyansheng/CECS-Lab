@@ -1,4 +1,3 @@
-`timescale 1ns/1ps
 `include "./include/config.sv"
 module ALU(
     input  logic [31:0] sr1,
@@ -41,15 +40,17 @@ module ALU(
     always_comb begin
         case(alu_op) 
         `ADD:                   result = sr1 + sr2;
+        // Lab3 TODO: finish the following cases
+
         `SUB:                   result = sr1 - sr2;
         `AND:                   result = sr1 & sr2;
-        `SLT:                   result = {31'b0, $signed(sr1) < $signed(sr2)};
-        `SLTU:                  result = {31'b0, sr1 < sr2};
+        `SLT:                   result = {31'H0, $signed(sr1) < $signed(sr2)};
+        `SLTU:                  result = {31'H0, sr1 < sr2};
         `OR:                    result = sr1 | sr2;
         `XOR:                   result = sr1 ^ sr2;
         `SLL:                   result = sr1 << sr2[4:0];
         `SRL:                   result = sr1 >> sr2[4:0];
-        `SRA:                   result = $signed(sr1) >>> sr2[4:0];
+        `SRA:                   result = $signed(sr1) >>> sr2[4 : 0];
         `MUL:                   result = result_64[31:0];
         `MULH, `MULHSU, `MULHU: result = result_64[63:32];
         `DIV, `DIVU:            result = sr2 == 0 ? -1 : result_div;
