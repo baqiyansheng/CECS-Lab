@@ -1,0 +1,17 @@
+src/add.c
+src/add-longlong.c
+src/bit.c
+src/bubble-sort.c
+src/crc32.c
+src/div.c
+src/dummy.c
+src/fact.c
+src/fib.c
+src/goldbach.c
+src/hello-str.c
+src/if-else.c
+src/leap-year.c
+src/load-store.c
+src/matrix-mul.c
+src/max.c
+src/mersenne.c
