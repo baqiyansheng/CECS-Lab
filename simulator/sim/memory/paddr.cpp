@@ -65,7 +65,6 @@ void pmem_read()
     {
         dut->rlast = 0;
         dut->rvalid = 0;
-        
         if (dut->arvalid == 1)
         {
             // Lab5 TODO: implement the read request
