@@ -1,10 +1,10 @@
 
 
-NAMES = video
+NAMES ?= keyboard
 SRCS = src/$(NAMES)
 BASE_PORT = $(abspath ../base-port)
 SIM_PATH = $(abspath ../../simulator)
-ARGS = -b
+ARGS ?= -b
 
 
 -include $(BASE_PORT)/Makefile

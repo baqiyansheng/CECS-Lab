@@ -1,6 +1,7 @@
 #include "VCPU.h"
 
 #include <assert.h>
+#include <iostream>
 #include "common.h"
 
 extern VCPU *dut;
@@ -82,9 +83,11 @@ void pmem_read()
         dut->arready = 0;
         // Lab5 TODO: implement the read data
         if (dut->rready == 1)
-        {
+        {   
+
             uint32_t byte_addr = araddr + rcount * arsize;
             dut->rdata = in_pmem(araddr) ? host_read(guest_to_host(byte_addr), 4) : mmio_read(byte_addr, 4);
+            // std::cout << std::hex << araddr << " " << dut->rdata << std::endl;
             rcount++;
             dut->rlast = rcount > arlen ? 1 : 0;
             dut->rvalid = 1;

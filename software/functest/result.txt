@@ -1,5 +1,0 @@
-src/add.c
-src/add-longlong.c
-src/bit.c
-src/bubble-sort.c
-src/crc32.c
