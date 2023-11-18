@@ -1,6 +1,11 @@
 {
     "files.associations": {
         "*.v": "verilog",
-        "chrono": "c"
+        "chrono": "c",
+        "stdlib.h": "c",
+        "typeindex": "c",
+        "typeinfo": "c",
+        "context.h": "c",
+        "fs.h": "c"
     }
 }

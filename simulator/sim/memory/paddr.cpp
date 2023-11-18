@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <iostream>
 #include "common.h"
+#include<stdlib.h>
 
 extern VCPU *dut;
 // the physical memory of our simulator
@@ -71,6 +72,11 @@ void pmem_read()
             // Lab5 TODO: implement the read request
             araddr = dut->araddr;
             assert(araddr >= 0x80000000);
+
+            // Log("%x", araddr);
+            // if (araddr >= 0x80000000)
+            // printf("0x%x\n", araddr);
+            // system("pause");
             arlen = dut->arlen;
             arsize = 1 << dut->arsize;
             dut->arready = 1;
@@ -83,7 +89,7 @@ void pmem_read()
         dut->arready = 0;
         // Lab5 TODO: implement the read data
         if (dut->rready == 1)
-        {   
+        {
 
             uint32_t byte_addr = araddr + rcount * arsize;
             dut->rdata = in_pmem(araddr) ? host_read(guest_to_host(byte_addr), 4) : mmio_read(byte_addr, 4);
@@ -92,7 +98,7 @@ void pmem_read()
             dut->rlast = rcount > arlen ? 1 : 0;
             dut->rvalid = 1;
             // dut->rresp = 0b00;
-            rstate = dut->rlast? 0 : 1;
+            rstate = dut->rlast ? 0 : 1;
         }
     }
 }

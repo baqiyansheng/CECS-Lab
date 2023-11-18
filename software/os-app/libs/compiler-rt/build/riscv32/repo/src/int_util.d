@@ -1,0 +1,27 @@
+/home/jy/CECS-Lab/software/os-app/libs/compiler-rt/build/riscv32/repo/src/int_util.o: \
+ /home/jy/CECS-Lab/software/os-app/libs/compiler-rt/repo/src/int_util.c \
+ /home/jy/CECS-Lab/software/os-app/libs/compiler-rt/repo/src/int_lib.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/limits.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/newlib.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/sys/cdefs.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/machine/_default_types.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/sys/features.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/_newlib_version.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/sys/syslimits.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/stdint.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/sys/_intsup.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/sys/_stdint.h \
+ /home/jy/CECS-Lab/software/os-app/libs/compiler-rt/repo/src/int_types.h \
+ /home/jy/CECS-Lab/software/os-app/libs/compiler-rt/repo/src/int_endianness.h \
+ /home/jy/CECS-Lab/software/os-app/libs/compiler-rt/repo/src/int_util.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/stdlib.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/machine/ieeefp.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/_ansi.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/sys/config.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/sys/reent.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/_ansi.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/sys/_types.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/machine/_types.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/sys/lock.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/machine/stdlib.h \
+ /home/jy/CECS-Lab/software/os-app/libs/libc/include/alloca.h
