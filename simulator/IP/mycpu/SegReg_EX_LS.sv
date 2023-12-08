@@ -9,7 +9,7 @@ module SegReg_EX_LS#(
 
     input  logic [31:0] pc_ex,
     input  logic [31:0] inst_ex,
-    input  logic [ 4:0] priv_vec_ex,
+    input  logic [ 9:0] priv_vec_ex,
     input  logic [31:0] csr_wdata_ex,
     input  logic [31:0] alu_result_ex,
     input  logic [ 4:0] mem_access_ex,
@@ -18,7 +18,7 @@ module SegReg_EX_LS#(
 
     output logic [31:0] pc_ls,
     output logic [31:0] inst_ls,
-    output logic [ 4:0] priv_vec_ls,
+    output logic [ 9:0] priv_vec_ls,
     output logic [31:0] csr_wdata_ls,
     output logic [31:0] alu_result_ls,
     output logic [ 4:0] mem_access_ls,
@@ -32,7 +32,7 @@ module SegReg_EX_LS#(
         if(!rstn || flush) begin
             pc_ls           <= PC_RESET_VAL;
             inst_ls         <= 32'h13;
-            priv_vec_ls     <=  5'h0;
+            priv_vec_ls     <=  10'h0;
             csr_wdata_ls    <= 32'h0;
             alu_result_ls   <= 32'h0;
             mem_access_ls   <=  5'h0;

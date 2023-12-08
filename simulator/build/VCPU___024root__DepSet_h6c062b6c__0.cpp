@@ -20,9 +20,9 @@ VL_INLINE_OPT void VCPU___024root____Vdpiimwrap_CPU__DOT__Regfile_inst__DOT__set
     set_gpr_ptr(&a__Vopenarray);
 }
 
-extern "C" void set_csr_ptr(const svOpenArrayHandle m1, const svOpenArrayHandle m2, const svOpenArrayHandle m3, const svOpenArrayHandle m4);
+extern "C" void set_csr_ptr(const svOpenArrayHandle m1, const svOpenArrayHandle m2, const svOpenArrayHandle m3, const svOpenArrayHandle m4, const svOpenArrayHandle m5);
 
-VL_INLINE_OPT void VCPU___024root____Vdpiimwrap_CPU__DOT__CSR_inst__DOT__set_csr_ptr__Vdpioc2_TOP(const IData/*31:0*/ &m1, const IData/*31:0*/ &m2, const IData/*31:0*/ &m3, const IData/*31:0*/ &m4) {
+VL_INLINE_OPT void VCPU___024root____Vdpiimwrap_CPU__DOT__CSR_inst__DOT__set_csr_ptr__Vdpioc2_TOP(const IData/*31:0*/ &m1, const IData/*31:0*/ &m2, const IData/*31:0*/ &m3, const IData/*31:0*/ &m4, const IData/*31:0*/ &m5) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VCPU___024root____Vdpiimwrap_CPU__DOT__CSR_inst__DOT__set_csr_ptr__Vdpioc2_TOP\n"); );
     // Body
     static const VerilatedVarProps m1__Vopenprops(VLVT_UINT32, VLVD_IN, VerilatedVarProps::Packed(), 31, 0);
@@ -33,7 +33,9 @@ VL_INLINE_OPT void VCPU___024root____Vdpiimwrap_CPU__DOT__CSR_inst__DOT__set_csr
     VerilatedDpiOpenVar m3__Vopenarray (&m3__Vopenprops, &m3);
     static const VerilatedVarProps m4__Vopenprops(VLVT_UINT32, VLVD_IN, VerilatedVarProps::Packed(), 31, 0);
     VerilatedDpiOpenVar m4__Vopenarray (&m4__Vopenprops, &m4);
-    set_csr_ptr(&m1__Vopenarray, &m2__Vopenarray, &m3__Vopenarray, &m4__Vopenarray);
+    static const VerilatedVarProps m5__Vopenprops(VLVT_UINT32, VLVD_IN, VerilatedVarProps::Packed(), 31, 0);
+    VerilatedDpiOpenVar m5__Vopenarray (&m5__Vopenprops, &m5);
+    set_csr_ptr(&m1__Vopenarray, &m2__Vopenarray, &m3__Vopenarray, &m4__Vopenarray, &m5__Vopenarray);
 }
 
 #ifdef VL_DEBUG

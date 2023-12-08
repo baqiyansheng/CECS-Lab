@@ -12,12 +12,11 @@ f(30) f(31)
 #define PUSH(n) sw concat(x, n), (n * 4)(sp);
 #define POP(n)  lw concat(x, n), (n * 4)(sp);
 
-#define CONTEXT_SIZE ((32 + 4) * 4)
+#define CONTEXT_SIZE ((32 + 3) * 4)
 #define OFFSET_SP     ( 2 * 4)
 #define OFFSET_CAUSE  (32 * 4)
 #define OFFSET_STATUS (33 * 4)
 #define OFFSET_EPC    (34 * 4)
-#define OFFSET_TVAL   (35 * 4)
 
 .globl __trap_vector
 __trap_vector:
@@ -32,12 +31,10 @@ __trap_vector:
   csrr t0, mcause
   csrr t1, mstatus
   csrr t2, mepc
-  csrr t3, mtval
 
   sw t0, OFFSET_CAUSE(sp)
   sw t1, OFFSET_STATUS(sp)
   sw t2, OFFSET_EPC(sp)
-  sw t3, OFFSET_TVAL(sp)
 
   mv a0, sp
   jal __irq_handle
@@ -48,7 +45,7 @@ __trap_vector:
   lw t2, OFFSET_EPC(sp)
   csrw mstatus, t1
   csrw mepc, t2
-  csrw mtval, t3
+
   MAP(REGS, POP)
 
   addi sp, sp, CONTEXT_SIZE

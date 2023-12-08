@@ -79,7 +79,7 @@ module CPU#(
     logic [ 4:0]    alu_op_id, alu_op_ex;
     logic [ 4:0]    mem_access_id, mem_access_ex, mem_access_ls;
     logic [ 4:0]    br_type_id, br_type_ex;
-    logic [ 4:0]    priv_vec_id, priv_vec_ex, priv_vec_ls, priv_vec_wb;
+    logic [ 9:0]    priv_vec_id, priv_vec_ex, priv_vec_ls, priv_vec_wb;
     logic [ 3:0]    wstrb_ex, d_wstrb;
     logic [ 2:0]    i_rsize, d_rsize, d_wsize;
     logic [ 1:0]    alu_rs1_sel_id, alu_rs1_sel_ex;
@@ -192,7 +192,8 @@ module CPU#(
         .alu_rs2_sel    (alu_rs2_sel_id),
         .wb_rf_sel      (wb_rf_sel_id),
         .br_type        (br_type_id),
-        .priv_vec       (priv_vec_id)
+        .priv_vec       (priv_vec_id),
+        .pc_id          (pc_id)
     );
     Regfile  Regfile_inst (
         .clk            (clk),

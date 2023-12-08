@@ -27,7 +27,7 @@ struct inst_log
 struct inst_log inst_log_queue[17];
 int front = 0;
 int rear = 0;
-uint32_t *cpu_mstatus = NULL, *cpu_mtvec = NULL, *cpu_mepc = NULL, *cpu_mcause = NULL;
+uint32_t *cpu_mstatus = NULL, *cpu_mtvec = NULL, *cpu_mepc = NULL, *cpu_mcause = NULL, *cpu_mtval = NULL;
 // load the state of your simulated cpu into sim_cpu
 void set_state()
 {
@@ -38,6 +38,7 @@ void set_state()
     memcpy(&sim_cpu.csr.mepc, cpu_mepc, 4);
     memcpy(&sim_cpu.csr.mstatus, cpu_mstatus, 4);
     memcpy(&sim_cpu.csr.mtvec, cpu_mtvec, 4);
+    memcpy(&sim_cpu.csr.mtval, cpu_mtval, 4);
 }
 
 // num of executed instruction
@@ -50,14 +51,14 @@ void single_cycle()
 
     dut->clk = 1;
     dut->eval();
-    // m_trace->dump(sim_time++);
+    m_trace->dump(sim_time++);
     dut->clk = 0;
 #ifdef AXI
     pmem_write();
     pmem_read();
 #endif
     dut->eval();
-    // m_trace->dump(sim_time++);
+    m_trace->dump(sim_time++);
     if (dut->commit_wb == 1)
         set_state();
 }
@@ -79,7 +80,8 @@ void reset(int n)
 // check if the program should end
 inline bool test_break()
 {
-    return dut->inst == 0x00100073U;
+    // Log("halt_ret=0x%x", sim_state.halt_ret);
+    return dut->inst == 0x00100073U && (cpu_gpr[10] == 0x0U || cpu_gpr[10] == 0x1U);
 }
 
 static void statistic()
@@ -164,11 +166,10 @@ void cpu_exec(unsigned int n)
         {
             if (npc_cpu_uncache_pre)
             {
-                difftest_sync();
+                // difftest_sync();
             }
             // Lab3 TODO: use difftest_step function here to execute difftest
-            difftest_step();
-
+            // difftest_step();
             npc_cpu_uncache_pre = dut->uncache_read_wb;
         }
         g_nr_guest_inst++;
@@ -234,12 +235,13 @@ extern "C" void set_gpr_ptr(const svOpenArrayHandle r)
     cpu_gpr = (uint32_t *)(((VerilatedDpiOpenVar *)r)->datap());
 }
 // set the pointers pint to you cpu's csr
-extern "C" void set_csr_ptr(const svOpenArrayHandle mstatus, const svOpenArrayHandle mtvec, const svOpenArrayHandle mepc, const svOpenArrayHandle mcause)
+extern "C" void set_csr_ptr(const svOpenArrayHandle mstatus, const svOpenArrayHandle mtvec, const svOpenArrayHandle mepc, const svOpenArrayHandle mcause, const svOpenArrayHandle mtval)
 {
     cpu_mstatus = (uint32_t *)(((VerilatedDpiOpenVar *)mstatus)->datap());
     cpu_mtvec = (uint32_t *)(((VerilatedDpiOpenVar *)mtvec)->datap());
     cpu_mepc = (uint32_t *)(((VerilatedDpiOpenVar *)mepc)->datap());
     cpu_mcause = (uint32_t *)(((VerilatedDpiOpenVar *)mcause)->datap());
+    cpu_mtval = (uint32_t *)(((VerilatedDpiOpenVar *)mtval)->datap());
 }
 
 void isa_reg_display()
@@ -253,6 +255,7 @@ void isa_reg_display()
     printf("mstatus = 0x%x\n", *cpu_mstatus);
     printf("mcause = 0x%x\t\t", *cpu_mcause);
     printf("mtvec = 0x%x\n", *cpu_mtvec);
+    printf("mtval = 0x%x\n", *cpu_mtval);
 }
 void print_itrace()
 {

@@ -12,6 +12,8 @@ class TestGen:
                 return (random.randint(0, 0x1F) & 0xFFFFFFFC, random.randint(0, 0x1F) & 0xFFFFFFFC)
             elif csr == 'mcause':
                 return (random.randint(0, 0x1F) & 0x8000000F, random.randint(0, 0x1F) & 0x8000000F)
+            elif csr == 'mtval':
+                return (random.randint(0, 0x1F), random.randint(0, 0x1F))
             else:
                 return (random.randint(0, 0x1F), random.randint(0, 0x1F))
         else:
@@ -21,6 +23,8 @@ class TestGen:
                 return (random.randint(0, 0xFFFFFFFF) & 0xFFFFFFFC, random.randint(0, 0xFFFFFFFF) & 0xFFFFFFFC)
             elif csr == 'mcause':
                 return (random.randint(0, 0xFFFFFFFF) & 0x8000000F, random.randint(0, 0xFFFFFFFF) & 0x8000000F)
+            elif csr == 'mtval':
+                return (random.randint(0, 0xFFFFFFFF), random.randint(0, 0xFFFFFFFF))
             else:
                 return (random.randint(0, 0xFFFFFFFF), random.randint(0, 0xFFFFFFFF))
 
@@ -44,7 +48,7 @@ class TestGen:
 
             if self.inst == 'csrrw' or self.inst == 'csrrs' or self.inst == 'csrrc':
                 for test_num in range(0, 20):
-                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause'][random.randint(0, 3)]
+                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause', 'mtval'][random.randint(0, 4)]
                     val_init, val_op = self.legal_op_gen(csr)
                     result = self.predict(val_init, val_op)
                     srcr = random.randint(2, 30)
@@ -53,7 +57,7 @@ class TestGen:
 
                 ofile.write('\n')
                 for test_num in range(20, 25):
-                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause'][random.randint(0, 3)]
+                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause', 'mtval'][random.randint(0, 4)]
                     val_init, val_op = self.legal_op_gen(csr)
                     result = self.predict(val_init, val_op)
                     gr = random.randint(2, 30)
@@ -61,7 +65,7 @@ class TestGen:
 
                 ofile.write('\n')
                 for test_num in range(25, 31):
-                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause'][random.randint(0, 3)]
+                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause', 'mtval'][random.randint(0, 4)]
                     val_init, val_op = self.legal_op_gen(csr)
                     result = self.predict(val_init, val_op)
                     srcr = random.randint(2, 30)
@@ -70,7 +74,7 @@ class TestGen:
 
                 ofile.write('\n')
                 for test_num in range(31, 35):
-                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause'][random.randint(0, 3)]
+                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause', 'mtval'][random.randint(0, 4)]
                     val_init, val_op = self.legal_op_gen(csr)
                     result = self.predict(val_init, 0)
                     srcr = random.randint(2, 30)
@@ -79,14 +83,14 @@ class TestGen:
 
                 ofile.write('\n')
                 for test_num in range(35, 40):
-                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause'][random.randint(0, 3)]
+                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause', 'mtval'][random.randint(0, 4)]
                     val_init, val_op = self.legal_op_gen(csr)
                     srcr = random.randint(2, 30)
                     ofile.write('TEST_CSR_ZERO_DEST({:d}, {}, {:#x}, {:#x}, x{:d}, {})\n'.format(test_num, self.inst, val_init, val_op, srcr, csr))
 
             elif self.inst == 'csrrwi' or self.inst == 'csrrsi' or self.inst == 'csrrci':
                 for test_num in range(0, 30):
-                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause'][random.randint(0, 3)]
+                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause', 'mtval'][random.randint(0, 4)]
                     val_init, val_op = self.legal_op_gen(csr)
                     result = self.predict(val_init, val_op)
                     srcr = random.randint(2, 30)
@@ -95,7 +99,7 @@ class TestGen:
 
                 ofile.write('\n')
                 for test_num in range(30, 36):
-                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause'][random.randint(0, 3)]
+                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause', 'mtval'][random.randint(0, 4)]
                     val_init, val_op = self.legal_op_gen(csr)
                     result = self.predict(val_init, val_op)
                     srcr = random.randint(2, 30)
@@ -104,7 +108,7 @@ class TestGen:
 
                 ofile.write('\n')
                 for test_num in range(36, 40):
-                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause'][random.randint(0, 3)]
+                    csr = ['mstatus', 'mtvec', 'mepc', 'mcause', 'mtval'][random.randint(0, 4)]
                     val_init, val_op = self.legal_op_gen(csr)
                     srcr = random.randint(2, 30)
                     ofile.write('TEST_CSRI_ZERO_DEST({:d}, {}, {:#x}, {:#x}, {})\n'.format(test_num, self.inst, val_init, val_op, csr))

@@ -22,6 +22,7 @@ typedef struct {
   word_t mstatus;
   word_t mcause;
   word_t mtvec;
+  word_t mtval;
 } CSR;
 
 typedef struct {

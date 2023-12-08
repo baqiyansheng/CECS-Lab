@@ -29,9 +29,9 @@ module Hazard(
     // control hazard
     input  logic [ 0:0] jump,
     input  logic [31:0] jump_target,
-    input  logic [ 4:0] priv_vec_ex,
+    input  logic [ 9:0] priv_vec_ex,
     input  logic [31:0] pc_ex,
-    input  logic [ 4:0] priv_vec_wb,
+    input  logic [ 9:0] priv_vec_wb,
     input  logic [31:0] pc_wb,
     input  logic [31:0] mepc_global,
     input  logic [31:0] mtvec_global,
@@ -98,7 +98,7 @@ module Hazard(
 
     // control hazard
     wire flush_by_jump      = jump;
-    wire flush_by_priv_ex   = |priv_vec_ex;
+    wire flush_by_priv_ex   = |priv_vec_ex[4:0];
     wire flush_by_exp       = |mcause_global;
 
     assign pc_set           = flush_by_jump || flush_by_priv_ex || flush_by_exp;

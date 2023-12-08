@@ -16,11 +16,11 @@ module CSR(
 
     input  logic [31:0] mcause_in,
 
-    input  logic [ 4:0] priv_vec_wb
+    input  logic [ 9:0] priv_vec_wb
 );
 
 `ifdef DIFF
-    import "DPI-C" function void set_csr_ptr(input logic [31:0] m1 [], input logic [31:0] m2 [], input  logic [31:0] m3 [], input  logic [31:0] m4 []);
+    import "DPI-C" function void set_csr_ptr(input logic [31:0] m1 [], input logic [31:0] m2 [], input  logic [31:0] m3 [], input  logic [31:0] m4 [],input logic[31:0] m5 []);
 `endif
     wire has_exp = |mcause_in;
     reg [31:0] mstatus;
@@ -77,6 +77,20 @@ module CSR(
         end
     end
 
+    reg [31:0] mtval;
+    always_ff @(posedge clk) begin
+        if(!rstn) begin
+            mtval <= 32'h0;
+        end
+        else if(has_exp) begin
+            if(priv_vec_wb[`BAD_PC])
+                mtval <= pc_wb;
+        end
+        else if(waddr == `CSR_MTVAL && we) begin
+            mtval <= wdata;
+        end
+    end
+
     // read
     always_comb begin
         case(raddr)
@@ -84,12 +98,13 @@ module CSR(
             `CSR_MTVEC  : rdata = mtvec;
             `CSR_MCAUSE : rdata = mcause;
             `CSR_MEPC   : rdata = mepc;
+            `CSR_MTVAL: rdata = mtval;
             default     : rdata = 32'h0;
         endcase
     end
     initial begin
 `ifdef DIFF
-        set_csr_ptr(mstatus, mtvec, mepc, mcause);
+        set_csr_ptr(mstatus, mtvec, mepc, mcause,mtval);
 `endif
     end
 endmodule

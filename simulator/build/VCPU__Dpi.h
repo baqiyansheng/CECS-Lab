@@ -17,7 +17,7 @@ extern "C" {
 
     // DPI IMPORTS
     // DPI import at /home/jy/CECS-Lab/simulator/IP/mycpu/CSR.sv:23:34
-    extern void set_csr_ptr(const svOpenArrayHandle m1, const svOpenArrayHandle m2, const svOpenArrayHandle m3, const svOpenArrayHandle m4);
+    extern void set_csr_ptr(const svOpenArrayHandle m1, const svOpenArrayHandle m2, const svOpenArrayHandle m3, const svOpenArrayHandle m4, const svOpenArrayHandle m5);
     // DPI import at /home/jy/CECS-Lab/simulator/IP/mycpu/Regfile.sv:18:34
     extern void set_gpr_ptr(const svOpenArrayHandle a);
 

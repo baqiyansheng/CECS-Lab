@@ -11,7 +11,7 @@ module SegReg_LS_WB#(
     input  logic [31:0] inst_ls,
     input  logic [31:0] alu_result_ls,
     input  logic [31:0] mem_rdata_ls,
-    input  logic [ 4:0] priv_vec_ls,
+    input  logic [ 9:0] priv_vec_ls,
     input  logic [31:0] csr_wdata_ls,
     input  logic [ 0:0] wb_rf_sel_ls,
     input  logic [ 0:0] rf_we_ls,
@@ -20,7 +20,7 @@ module SegReg_LS_WB#(
     output logic [31:0] inst_wb,
     output logic [31:0] alu_result_wb,
     output logic [31:0] mem_rdata_wb,
-    output logic [ 4:0] priv_vec_wb,
+    output logic [ 9:0] priv_vec_wb,
     output logic [31:0] csr_wdata_wb,
     output logic [ 0:0] wb_rf_sel_wb,
     output logic [ 0:0] rf_we_wb,
@@ -36,7 +36,7 @@ module SegReg_LS_WB#(
             inst_wb         <= 32'h13;
             alu_result_wb   <= 32'h0;
             mem_rdata_wb    <= 32'h0;
-            priv_vec_wb     <= 5'h0;
+            priv_vec_wb     <= 10'h0;
             csr_wdata_wb    <= 32'h0;
             wb_rf_sel_wb    <= 1'h0;
             rf_we_wb        <= 1'h0;

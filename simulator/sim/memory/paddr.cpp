@@ -71,6 +71,8 @@ void pmem_read()
         {
             // Lab5 TODO: implement the read request
             araddr = dut->araddr;
+            if(araddr < 0x80000000)
+                printf("dut->araddr:%x\n",dut->araddr);
             assert(araddr >= 0x80000000);
 
             // Log("%x", araddr);

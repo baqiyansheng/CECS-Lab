@@ -22,6 +22,7 @@ uint8_t* new_space(int size) {
 static bool check_bound(IOMap *map, paddr_t addr) {
   if (map == NULL || addr > map->high || addr < map->low) {
     sim_state.state = SIM_ABORT;
+    
     return false;
   } 
   return true;

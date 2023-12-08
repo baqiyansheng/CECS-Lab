@@ -61,6 +61,7 @@
 `define CSR_MTVEC       12'h305
 `define CSR_MEPC        12'h341
 `define CSR_MCAUSE      12'h342
+`define CSR_MTVAL       12'h343
 
 
 // Privilege Vector
@@ -69,5 +70,8 @@
 `define MRET            2
 `define FENCEI          3
 `define FENCE           4
-
+`define BAD_PC          5
+`define BAD_INST        6
+`define PC_FAULT        7
+`define EBREAK          8
 

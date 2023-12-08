@@ -57,6 +57,7 @@ static word_t mmsexth(word_t i) { return SEXT(BITS(i, 15, 0), 16); }
 
 word_t csr_read(word_t index) {
   switch (index) {
+    // printf("index:%d\n",index);
     case 0x300:
       return cpu.csr.mstatus;
     case 0x305:
@@ -65,6 +66,8 @@ word_t csr_read(word_t index) {
       return cpu.csr.mepc;
     case 0x342:
       return cpu.csr.mcause;
+    case 0x343:
+      return cpu.csr.mtval;
     default:
       assert(0);
   }
@@ -85,8 +88,11 @@ void csr_write(word_t index, word_t wdata) {
     case 0x342:
       cpu.csr.mcause = wdata;
       return;
+    case 0x343:
+      cpu.csr.mtval = wdata;
+      return;
     default:
-      assert(0);
+        assert(0);
   }
 }
 

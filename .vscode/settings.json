@@ -6,6 +6,23 @@
         "typeindex": "c",
         "typeinfo": "c",
         "context.h": "c",
-        "fs.h": "c"
+        "fs.h": "c",
+        "random": "c",
+        "any": "c",
+        "array": "c",
+        "charconv": "c",
+        "compare": "c",
+        "functional": "c",
+        "memory_resource": "c",
+        "ratio": "c",
+        "scoped_allocator": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "variant": "c",
+        "*.tcc": "c",
+        "optional": "c",
+        "system_error": "c",
+        "regex": "c"
     }
 }

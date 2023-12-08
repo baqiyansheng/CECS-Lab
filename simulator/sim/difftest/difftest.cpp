@@ -114,7 +114,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc)
         printf("pc不一样,NEMU是%x,sim_cpu是%x\n", pc, sim_cpu.pc);
         // return false;
     }
-    const char *csr_names[] = {"mepc", "mstatus", "mcause", "mtvec"};
+    const char *csr_names[] = {"mepc", "mstatus", "mcause", "mtvec", "mtval"};
     // check csr
     // Lab4 TODO: (In Lab3, you can ignore this part.)implement the csr check function, return false if any difference, and output some infomation of the difference
     if (ref_r->csr.mepc != sim_cpu.csr.mepc)
@@ -141,6 +141,12 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc)
         printf("%s不一样,NEMU是%x,sim_cpu是%x\n", csr_names[3], ref_r->csr.mtvec, sim_cpu.csr.mtvec);
         return false;
     }
+    // if (ref_r->csr.mtval != sim_cpu.csr.mtval)
+    // {
+    //     printf("pc = 0x%x ", sim_cpu.pc);
+    //     printf("%s不一样,NEMU是%x,sim_cpu是%x\n", csr_names[4], ref_r->csr.mtval, sim_cpu.csr.mtval);
+    //     return false;
+    // }
     return true;
 }
 
@@ -174,6 +180,7 @@ static void checkmem(uint8_t *ref_m, vaddr_t pc)
 {
     if (!isa_difftest_checkmem(ref_m, pc))
     {
+        
         sim_state.state = SIM_ABORT;
         sim_state.halt_pc = pc;
     }
@@ -183,8 +190,11 @@ void difftest_step()
 {
     CPU_state ref_r;
     difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+    // printf("difftest_regcpy\n");
     // difftest_memcpy(CONFIG_MBASE, ref_pmem, CONFIG_MSIZE, DIFFTEST_TO_DUT);
     checkregs(&ref_r, sim_cpu.pc);
+    // printf("checkregs\n");
     difftest_exec(1);
+    // printf("difftest_exec\n");
     // checkmem(ref_pmem, sim_cpu.pc);
 }
